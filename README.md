@@ -12,3 +12,7 @@ Will be Building a neural network to come up the nutrients from the preparation 
 
 Step Four:
 Testing Everything and Improving the models
+
+
+![Progress](Example.jpg)
+
