@@ -14,5 +14,5 @@ Step Four:
 Testing Everything and Improving the models
 
 
-![Progress](Example.jpg)
+![Progress](Example.png)
 
