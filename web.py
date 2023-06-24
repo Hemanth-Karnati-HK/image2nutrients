@@ -7,11 +7,6 @@ from io import BytesIO
 import zipfile
 import os
 
-os.system('pip install --upgrade transformers')
-
-# Unzip the model file
-with zipfile.ZipFile('finetuned_model.zip', 'r') as zip_ref:
-    zip_ref.extractall()
 
 # Load the pre-trained model
 model = VisionEncoderDecoderModel.from_pretrained('finetuned_model')
