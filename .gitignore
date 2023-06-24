@@ -1,2 +1,4 @@
 *.zip
-/finetuned_model/
+finetuned_model/
+echo "finetuned_model/pytorch_model.bin" >> .gitignore
+echo "finetuned_model.zip" >> .gitignore
