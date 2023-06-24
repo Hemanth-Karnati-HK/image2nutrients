@@ -1,0 +1,8 @@
+streamlit
+pillow
+torch
+transformers
+nltk
+matplotlib
+opencv-python-headless
+pandas
