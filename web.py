@@ -1,37 +1,24 @@
-import streamlit as st
-from PIL import Image
-import os
-import torch
-from transformers import VisionEncoderDecoderModel, AutoTokenizer, ViTImageProcessor
-from io import BytesIO
+import nltk
+import openai
 import zipfile
+from io import BytesIO
+from transformers import VisionEncoderDecoderModel, AutoTokenizer, ViTImageProcessor
+import torch
+from PIL import Image
+import streamlit as st
+from nltk.corpus import stopwords
 import os
+os.system('pip install --upgrade transformers')
+os.system('pip install nltk')
+os.system('pip install openai')
+nltk.download('stopwords')
+
+
+openai.api_key = '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'
 
 
 # Load the pre-trained model
-import requests
-
-
-# def download_model(model_url, model_path):
-#     response = requests.get(model_url)
-#     response.raise_for_status()
-#     with open("model.zip", "wb") as f:
-#         f.write(response.content)
-
-
-# # Call the function to download the model
-# model_url = "https://drive.google.com/file/d/1LCZVoPhM2AjGdG6r1-m3tHkODidyYsqg/view?usp=sharing"
-# model_path = "finetuned_model"
-# download_model(model_url, model_path)
-
-# # Unzip the model
-# with zipfile.ZipFile("model.zip", 'r') as zip_ref:
-#     zip_ref.extractall(model_path)
-
-# Then you can load the model from the downloaded file
-model = VisionEncoderDecoderModel.from_pretrained(
-    'nlpconnect/vit-gpt2-image-captioning')
-
+model = VisionEncoderDecoderModel.from_pretrained('finetuned_model')
 model.eval()
 
 # Define the feature extractor
@@ -78,6 +65,16 @@ def predict_step(image_files, model, feature_extractor, tokenizer, device, gen_k
     preds = [pred.strip() for pred in preds]
     return preds
 
+
+# Get the list of English stop words
+stop_words = set(stopwords.words('english'))
+
+# Function to remove stop words from a list of words
+
+
+def remove_stop_words(word_list):
+    return [word for word in word_list if word not in stop_words]
+
 # Streamlit app code
 
 
@@ -106,10 +103,33 @@ def main():
         # remove duplicates
         preds = list(dict.fromkeys(preds))
 
+        preds = remove_stop_words(preds)
+
         # Display the recognized ingredients
         st.subheader("Recognized Ingredients:")
         for ingredient in preds:
             st.write(ingredient)
+
+        preds_str = ', '.join(preds)
+
+        response = openai.ChatCompletion.create(
+            model="gpt-4",
+            messages=[
+                {
+                    "role": "system",
+                    "content": "You are a knowledgeable assistant that provides nutritional advice based on a list of ingredients."
+                },
+                {
+                    "role": "user",
+                    "content": f"The identified ingredients are: {preds_str}. Note that some ingredients may not make sense, so use the ones that do. Can you provide a nutritional analysis and suggestions for improvement?"
+                },
+            ]
+        )
+
+        suggestions = response['choices'][0]['message']['content']
+
+        st.subheader("Nutritional Analysis and Suggestions:")
+        st.write(suggestions)
 
 
 if __name__ == "__main__":
