@@ -9,7 +9,24 @@ import os
 
 
 # Load the pre-trained model
-model = VisionEncoderDecoderModel.from_pretrained('finetuned_model')
+import requests
+
+
+def download_model(model_url, model_path):
+    response = requests.get(model_url)
+    response.raise_for_status()
+    with open(model_path, "wb") as f:
+        f.write(response.content)
+
+
+# Call the function to download the model
+model_url = "https://drive.google.com/drive/folders/1gaM01eV6Ms2lAcwwjgy0UQQstoW_Aq5S?usp=sharing"
+model_path = "finetuned_model"
+download_model(model_url, model_path)
+
+# Then you can load the model from the downloaded file
+model = VisionEncoderDecoderModel.from_pretrained(model_path)
+
 model.eval()
 
 # Define the feature extractor
