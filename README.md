@@ -1,5 +1,5 @@
-# Project_N
-Project_N is an application developed with the aim to extract nutritional insights from images of food, with no additional information required. The application operates using artificial intelligence to analyze images of meals, identify the ingredients present, and then provide a comprehensive nutritional breakdown. Here are the steps taken in the development of this application:
+# Image2Nutrients
+Image2Nutrients is an application developed with the aim to extract nutritional insights from images of food, with no additional information required. The application operates using artificial intelligence to analyze images of meals, identify the ingredients present, and then provide a comprehensive nutritional breakdown. Here are the steps taken in the development of this application:
 
 Fine-tuning the VisionEncoderDecoderModel: We started by fine-tuning a VisionEncoderDecoderModel, a pre-trained model, on a specific food dataset. The model was capable of interpreting food images and identifying key ingredients.
 
